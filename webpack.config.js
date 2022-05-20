@@ -18,8 +18,7 @@ module.exports = {
     open: true,
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.js$/,
         use: "babel-loader",
         exclude: "/node_modules/",
@@ -31,9 +30,12 @@ module.exports = {
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, {
-          loader: 'css-loader'
-        }]
-      }
+          loader: 'css-loader',    
+          options: { importLoaders: 1 }      
+        },
+        'postcss-loader'
+         ]
+      },
     ]
   },
   plugins: [
