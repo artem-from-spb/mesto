@@ -1,3 +1,5 @@
+import './index.css';
+
 import { initialCards, profilePopup, profileEditButton, profilePopupCloseButton, profileForm, nameInput,
    jobInput, profileTitle, profileSubtitle, placeAddPopup, placeAddButton, placeAddPopupCloseButton, 
    placeAddPopupSaveButton, placeInput, pictureInput, placeAddForm, cardTemplate, elements, bigPicturePopup, 
@@ -9,8 +11,6 @@ import Popup from "../components/Popup.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
-
-//import './index.css';
 
 
 //Попап 1
