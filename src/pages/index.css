@@ -3,7 +3,7 @@
 @import url(../vendor/fonts.css);
 
 @import url(../blocks/card/card.css);
-@import url(../blocks/card/__recycle-byn/card__recycle-byn.css);
+@import url(../blocks/card/__recycle-bin/card__recycle-bin.css);
 @import url(../blocks/card/__image/card__image.css);
 @import url(../blocks/card/__info/card__info.css);
 @import url(../blocks/card/__title/card__title.css);

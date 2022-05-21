@@ -8,9 +8,13 @@
   </head>
   <body class="page">
     <header class="header">
-      <img src="<%=require('./images/logo.svg')%>" class="header__logo" alt="Логотип Место" />
+      <img
+        src="<%=require('./images/logo.svg')%>"
+        class="header__logo"
+        alt="Логотип Место"
+      />
     </header>
- 
+
     <main>
       <section class="profile">
         <img
@@ -38,7 +42,11 @@
         </div>
 
         <button class="profile__add-button" type="button" aria-label="Добавить">
-          <img src="<%=require('./images/plus.svg')%>" alt="Добавить" class="profile__plus" />
+          <img
+            src="<%=require('./images/plus.svg')%>"
+            alt="Добавить"
+            class="profile__plus"
+          />
         </button>
       </section>
 
@@ -160,10 +168,10 @@
     <template id="card-template">
       <div class="card">
         <img
-          src="<%=require('./images/recycle-byn.svg')%>"
+          src="<%=require('./images/recycle-bin.svg')%>"
           alt="Корзина"
-          class="card__recycle-byn"
-          id="byn"
+          class="card__recycle-bin"
+          id="bin"
         />
         <img
           src="<%=require('./images/karachaevsk.jpg')%>"
@@ -176,9 +184,5 @@
         </div>
       </div>
     </template>
-
-  
-
-
   </body>
 </html>

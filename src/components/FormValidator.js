@@ -5,9 +5,6 @@ export default class FormValidator {
   }
 
   enableValidation() {
-    const formList = Array.from(
-      document.querySelectorAll(this._data.formSelector)
-    );
     this._setEventListeners();
   }
 
@@ -61,8 +58,7 @@ export default class FormValidator {
       this._data.submitButtonSelector
     );
     if (this._hasInvalidInput(this._inputList)) {
-      this._buttonElement.classList.add(this._data.inactiveButtonClass);
-      this._buttonElement.setAttribute("disabled", "1");
+      this.disableButton();
     } else {
       this._buttonElement.classList.remove(this._data.inactiveButtonClass);
       this._buttonElement.removeAttribute("disabled");
@@ -75,8 +71,8 @@ export default class FormValidator {
   }
 
   resetErrors() {
-     this._inputList.forEach((item) => {
-       this._hideInputError(item);
-     })
-   }
+    this._inputList.forEach((item) => {
+      this._hideInputError(item);
+    });
+  }
 }

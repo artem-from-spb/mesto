@@ -1,74 +1,80 @@
-import './index.css';
+import "./index.css";
 
-import { initialCards, profilePopup, profileEditButton, profilePopupCloseButton, profileForm, nameInput,
-   jobInput, profileTitle, profileSubtitle, placeAddPopup, placeAddButton, placeAddPopupCloseButton, 
-   placeAddPopupSaveButton, placeInput, pictureInput, placeAddForm, cardTemplate, elements, bigPicturePopup, 
-   bigPicturePopupCloseButton, pictureXl, pictureCaption, config } from "../utils/constants.js";
-import Card from "../components/Сard.js";
+import {
+  initialCards,
+  profilePopup,
+  profileEditButton,
+  nameInput,
+  jobInput,
+  placeAddButton,
+  placeAddForm,
+  config,
+} from "../utils/constants.js";
+
+import Card from "../components/Card.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
-import Popup from "../components/Popup.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 
-
 //Попап 1
-const userInfo = new UserInfo({ 
-  name: '.profile__title',
-  job: '.profile__subtitle' 
-})
+const userInfo = new UserInfo({
+  name: ".profile__title",
+  job: ".profile__subtitle",
+});
 
-const popupWithFormProfile = new PopupWithForm('.popup_profile', (data) => {
+const popupWithFormProfile = new PopupWithForm(".popup_profile", (data) => {
   userInfo.setUserInfo(data);
-})
+});
 
 popupWithFormProfile.setEventListeners();
 
-profileEditButton.addEventListener('click', () => {
-  const getData = userInfo.getUserInfo();
-  nameInput.value = getData.name;
-  jobInput.value = getData.job;
+profileEditButton.addEventListener("click", () => {
+  const { name, job } = userInfo.getUserInfo();
+  nameInput.value = name;
+  jobInput.value = job;
 
   popupWithFormProfile.open();
   validateProfilePopup.resetErrors();
-})
-
+});
 
 //Попап 2
 //Создание карточек
-const newCard = (data) => {
+const createNewCard = (data) => {
   const card = new Card(data, ".card", handleCardClick);
-  const cardElement = card.generateCard();
-  return cardElement;
-}
+  return card.generateCard();
+};
 
-const createCard = new Section({
-  items: initialCards,
-  renderer: newCard
-}, '.elements')
+const createCard = new Section(
+  {
+    items: initialCards,
+    renderer: (data) => createCard.setItem(createNewCard(data)),
+  },
+  ".elements"
+);
 
 //Добавление в верстку
 createCard.renderItems();
 
-const popupWithFormPlaceAdd = new PopupWithForm('.popup_add', (data) => {
-  createCard.setItem(newCard(data));
-})
+const popupWithFormPlaceAdd = new PopupWithForm(".popup_add", (data) => {
+  createCard.setItem(createNewCard(data));
+});
 
 popupWithFormPlaceAdd.setEventListeners();
 
-placeAddButton.addEventListener('click', () => {
+placeAddButton.addEventListener("click", () => {
   validatePlaceAddPopup.resetErrors();
+  validatePlaceAddPopup.disableButton();
   popupWithFormPlaceAdd.open();
-})
-
+});
 
 //попап 3
 const popupWithImage = new PopupWithImage({
-  popupSelector: '.popup_big-picture',
-  text: '.popup__pic-caption',
-  pic: '.popup__picture-xl'
-})
+  popupSelector: ".popup_big-picture",
+  text: ".popup__pic-caption",
+  pic: ".popup__picture-xl",
+});
 
 function handleCardClick(name, link) {
   popupWithImage.open(name, link);
@@ -76,11 +82,9 @@ function handleCardClick(name, link) {
 
 popupWithImage.setEventListeners();
 
-
 //Validation
 const validateProfilePopup = new FormValidator(profilePopup, config);
 const validatePlaceAddPopup = new FormValidator(placeAddForm, config);
 
 validateProfilePopup.enableValidation();
 validatePlaceAddPopup.enableValidation();
-
