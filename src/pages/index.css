@@ -48,3 +48,5 @@
 @import url(../blocks/popup/_big-pic/popup_big-pic.css);
 @import url(../blocks/popup/__error/popup__error.css);
 @import url(../blocks/popup/__error/_active/popup__error_active.css);
+@import url(../blocks/popup/__button-save/_confirm/popup__button-save.css);
+@import url(../blocks/popup/__title/_confirm/popup__title_confirm.css);

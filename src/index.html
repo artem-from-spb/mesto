@@ -16,6 +16,8 @@
     </header>
 
     <main>
+      
+      <!-- Кусто -->
       <section class="profile">
         <img
           class="profile__avatar"
@@ -50,13 +52,16 @@
         </button>
       </section>
 
-      <section class="elements"></section>
+      <!-- Карточки -->
+      <section class="elements">
+      </section>
     </main>
 
     <footer class="footer">
       <p class="footer__text">&copy; 2022 Mesto Russia</p>
     </footer>
 
+    <!-- Попап редактирования Кусто -->
     <section class="popup popup_profile">
       <div class="popup__container">
         <h2 class="popup__title">Редактировать профиль</h2>
@@ -105,6 +110,7 @@
       </div>
     </section>
 
+    <!-- Попап добавления карточек -->
     <section class="popup popup_add">
       <div class="popup__container">
         <h2 class="popup__title">Новое место</h2>
@@ -147,6 +153,7 @@
       </div>
     </section>
 
+    <!-- Большая картинка -->
     <section class="popup popup_big-picture">
       <div class="popup__container popup__container_size_xl">
         <img
@@ -165,6 +172,26 @@
       </div>
     </section>
 
+    <!-- Подтвердить удаление -->
+    <section class="popup popup_confirm">
+      <div class="popup__container">
+        <h2 class="popup__title popup__title_confirm">Вы уверены?</h2>
+        <button class="popup__button-save popup__button-save_confirm" type="submit" aria-label="Создать">
+          Да
+        </button>
+        <button type="button" class="popup__button-close">
+          <img
+            src="<%=require('./images/Close_Icon.svg')%>"
+            alt="Закрыть окно"
+            class="popup__close-img"
+          />
+        </button>
+      </div>
+    </section>
+
+
+
+    <!-- Темплейт - заготовка карточки -->
     <template id="card-template">
       <div class="card">
         <img
@@ -184,5 +211,6 @@
         </div>
       </div>
     </template>
+
   </body>
 </html>

@@ -1,7 +1,6 @@
 import "./index.css";
 
 import {
-  initialCards,
   profilePopup,
   profileEditButton,
   nameInput,
@@ -22,16 +21,47 @@ import Api from "../components/Api.js";
 
 ///////////////////////////////API
 const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-41/cards',
+  url: 'https://mesto.nomoreparties.co/v1/cohort-41/',
   headers: {
     "authorization": "d9187298-bc53-4629-9e17-1bb6bde52016",
     "content-type": "application/json"
   }
 })
-api.getInitialCards()
+
+///1. Загрузка информации о пользователе с сервера
+api.getUserInfo()
+
+
+///2. Загрузка карточек с сервера
+api.getInitialCards().then((cards) => {
+  const createCard = new Section(
+    {
+      items: cards,
+      renderer: (data) => createCard.addItem(createNewCard(data)),
+    },
+    ".elements"
+  );
+  createCard.renderItems();
+}).catch((err) => alert(err));
+
+
+///3. Редактирование профиля
+//api.editProfileData();
 
 
 
+
+
+
+
+// 6. Попап удаления карточки
+// const recycle = document.querySelector('.card__recycle-bin');
+// const confirmPopup = document.querySelector('.popup_confirm');
+// recycle.addEventListener('click', () => {
+//   confirmPopup.classList.add('popup_opened');
+// })
+// const cardAdd = api.addNewCard(data);
+// cardAdd.then()
 
 
 
@@ -72,19 +102,13 @@ const createNewCard = (data) => {
   return card.generateCard();
 };
 
-const createCard = new Section(
-  {
-    items: initialCards,
-    renderer: (data) => createCard.setItem(createNewCard(data)),
-  },
-  ".elements"
-);
+
 
 //Добавление в верстку
-createCard.renderItems();
+
 
 const popupWithFormPlaceAdd = new PopupWithForm(".popup_add", (data) => {
-  createCard.setItem(createNewCard(data));
+  createCard.addItem(createNewCard(data));
 });
 
 popupWithFormPlaceAdd.setEventListeners();

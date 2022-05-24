@@ -47,7 +47,9 @@ export default class Card {
     this._element
       .querySelector(".card__recycle-bin")
       .addEventListener("click", () => {
-        this._removeItem();
+     //   this._removeItem();
+     const confirmPopup = document.querySelector('.popup_confirm');
+     confirmPopup.classList.add('popup_opened');
       });
 
     this._cardImage.addEventListener("click", () => {
