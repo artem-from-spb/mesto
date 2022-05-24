@@ -17,6 +17,32 @@ import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
+import Api from "../components/Api.js";
+
+
+///////////////////////////////API
+const api = new Api({
+  url: 'https://mesto.nomoreparties.co/v1/cohort-41/cards',
+  headers: {
+    "authorization": "d9187298-bc53-4629-9e17-1bb6bde52016",
+    "content-type": "application/json"
+  }
+})
+api.getInitialCards()
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////
+
 
 //Попап 1
 const userInfo = new UserInfo({
