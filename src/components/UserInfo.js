@@ -1,7 +1,8 @@
 export default class UserInfo {
-  constructor({ name, job }) {
+  constructor({ name, job }, api) {
     this._name = document.querySelector(name);
     this._job = document.querySelector(job);
+    this._api = api
   }
 
   getUserInfo() {

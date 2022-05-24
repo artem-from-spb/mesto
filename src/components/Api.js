@@ -34,11 +34,11 @@ export default class Api {
   //3. Редактирование профиля
     editProfileData(data) {
       return fetch(`${this._url}users/me`, {
-        method: "POST",
+        method: "PATCH",
         headers: this._headers,
         body: JSON.stringify({
-            name: 'Marie Skłodowska Curie',
-            about: 'Physicist and Chemist'
+            name: data.name,
+            about: data.about
         })
       }).then((res) => {
         if (res.ok) {

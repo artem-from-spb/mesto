@@ -18,61 +18,54 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
 
-
 ///////////////////////////////API
 const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-41/',
+  url: "https://mesto.nomoreparties.co/v1/cohort-41/",
   headers: {
-    "authorization": "d9187298-bc53-4629-9e17-1bb6bde52016",
-    "content-type": "application/json"
-  }
-})
+    authorization: "d9187298-bc53-4629-9e17-1bb6bde52016",
+    "content-type": "application/json",
+  },
+});
 
 ///1. Загрузка информации о пользователе с сервера
-api.getUserInfo()
-
+api.getUserInfo();
 
 ///2. Загрузка карточек с сервера
-api.getInitialCards().then((cards) => {
-  const createCard = new Section(
-    {
-      items: cards,
-      renderer: (data) => createCard.addItem(createNewCard(data)),
-    },
-    ".elements"
-  );
-  createCard.renderItems();
-}).catch((err) => alert(err));
-
+api
+  .getInitialCards()
+  .then((cards) => {
+    const createCard = new Section(
+      {
+        items: cards,
+        renderer: (data) => createCard.addItem(createNewCard(data)),
+      },
+      ".elements"
+    );
+    createCard.renderItems();
+  })
+  .catch((err) => alert(err));
 
 ///3. Редактирование профиля
-//api.editProfileData();
+api
+  .editProfileData({
+    name: "Marie Skłodowska Curie",
+    about: "Physicist and Chemist",
+  })
+  .then((data) => {
+    userInfo.setUserInfo({ name: data.name, job: data.about });
+  })
+  .catch((err) => alert(err))
 
-
-
-
-
-
-
-// 6. Попап удаления карточки
-// const recycle = document.querySelector('.card__recycle-bin');
-// const confirmPopup = document.querySelector('.popup_confirm');
-// recycle.addEventListener('click', () => {
-//   confirmPopup.classList.add('popup_opened');
-// })
+  
+//4. Добавление новой карточки
 // const cardAdd = api.addNewCard(data);
 // cardAdd.then()
 
+//5. Отображение количества лайков карточки
 
-
-
-
-
-
-
+// 6. Попап удаления карточки
 
 //////////////////////////
-
 
 //Попап 1
 const userInfo = new UserInfo({
@@ -102,10 +95,7 @@ const createNewCard = (data) => {
   return card.generateCard();
 };
 
-
-
 //Добавление в верстку
-
 
 const popupWithFormPlaceAdd = new PopupWithForm(".popup_add", (data) => {
   createCard.addItem(createNewCard(data));
