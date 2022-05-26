@@ -32,39 +32,38 @@ export default class Api {
   }
 
   //3. Редактирование профиля
-    editProfileData(data) {
-      return fetch(`${this._url}users/me`, {
-        method: "PATCH",
-        headers: this._headers,
-        body: JSON.stringify({
-            name: data.name,
-            about: data.about
-        })
-      }).then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
+  editProfileData(data) {
+    return fetch(`${this._url}users/me`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: data.name,
+        about: data.about,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
 
-        return Promise.reject("Что-то пошло не так :(");
-      });
-    }
+      return Promise.reject("Что-то пошло не так :(");
+    });
+  }
 
-  
+  //4. Добавление новой карточки
+  addNewCard(data) {
+    return fetch(`${this._url}cards`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: data.name,
+        link: data.link,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
 
-  //   addNewCard(data) {
-  //     return fetch(`${this._url}cards`, {
-  //       method: "POST",
-  //       headers: this._headers,
-  //       body: JSON.stringify({
-  //           name: data.name,
-  //           link: data.link
-  //       })
-  //     }).then((res) => {
-  //       if (res.ok) {
-  //         return res.json();
-  //       }
-
-  //       return Promise.reject("Что-то пошло не так :(");
-  //     });
-  //   }
+      return Promise.reject("Что-то пошло не так :(");
+    });
+  }
 }

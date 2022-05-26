@@ -7,6 +7,7 @@ import {
   jobInput,
   placeAddButton,
   placeAddForm,
+  avatarChangeForm,
   config,
 } from "../utils/constants.js";
 
@@ -27,24 +28,27 @@ const api = new Api({
   },
 });
 
+
+///new Section
+const createCard = new Section((item) => {
+  createCard.addItem(createNewCard(item));
+}, ".elements");
+
+
+
 ///1. Загрузка информации о пользователе с сервера
 api.getUserInfo();
+
 
 ///2. Загрузка карточек с сервера
 api
   .getInitialCards()
-  .then((cards) => {
-    const createCard = new Section(
-      {
-        items: cards,
-        renderer: (data) => createCard.addItem(createNewCard(data)),
-      },
-      ".elements"
-    );
-    createCard.renderItems();
+  .then((res) => {
+    createCard.renderItems(res);
   })
   .catch((err) => alert(err));
 
+  
 ///3. Редактирование профиля
 api
   .editProfileData({
@@ -54,12 +58,18 @@ api
   .then((data) => {
     userInfo.setUserInfo({ name: data.name, job: data.about });
   })
-  .catch((err) => alert(err))
+  .catch((err) => alert(err));
 
-  
+
 //4. Добавление новой карточки
-// const cardAdd = api.addNewCard(data);
-// cardAdd.then()
+const popupWithFormPlaceAdd = new PopupWithForm(".popup_add", (data) => {
+  api.addNewCard(data).then((res) => {
+    createCard.addItem(createNewCard(res));
+  });
+});
+
+popupWithFormPlaceAdd.setEventListeners();
+
 
 //5. Отображение количества лайков карточки
 
@@ -97,11 +107,7 @@ const createNewCard = (data) => {
 
 //Добавление в верстку
 
-const popupWithFormPlaceAdd = new PopupWithForm(".popup_add", (data) => {
-  createCard.addItem(createNewCard(data));
-});
 
-popupWithFormPlaceAdd.setEventListeners();
 
 placeAddButton.addEventListener("click", () => {
   validatePlaceAddPopup.resetErrors();
@@ -125,6 +131,8 @@ popupWithImage.setEventListeners();
 //Validation
 const validateProfilePopup = new FormValidator(profilePopup, config);
 const validatePlaceAddPopup = new FormValidator(placeAddForm, config);
+const validateAvatarpopup = new FormValidator(avatarChangeForm, config);
 
 validateProfilePopup.enableValidation();
 validatePlaceAddPopup.enableValidation();
+validateAvatarpopup.enableValidation();

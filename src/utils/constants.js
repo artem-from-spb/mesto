@@ -1,4 +1,4 @@
-// Попап 1
+// Попап 1 (Кусто данные)
 export const profilePopup = document.querySelector(".popup_profile");
 export const profileEditButton = document.querySelector(".profile__edit");
 export const profilePopupCloseButton =
@@ -11,7 +11,7 @@ export const jobInput = profilePopup.querySelector(".popup__input_type_about");
 export const profileTitle = document.querySelector(".profile__title");
 export const profileSubtitle = document.querySelector(".profile__subtitle");
 
-// Попап 2
+// Попап 2 (Место добавить)
 export const placeAddPopup = document.querySelector(".popup_add");
 export const placeAddButton = document.querySelector(".profile__add-button");
 export const placeAddPopupCloseButton =
@@ -31,7 +31,7 @@ export const placeAddForm = placeAddPopup.querySelector(".popup__form_add");
 export const cardTemplate = document.querySelector("#card-template").content;
 export const elements = document.querySelector(".elements");
 
-// Попап 3
+// Попап 3 (большая картинка)
 export const bigPicturePopup = document.querySelector(".popup_big-picture");
 export const bigPicturePopupCloseButton =
   bigPicturePopup.querySelector(".popup__close-img");
@@ -40,6 +40,10 @@ export const pictureXl = bigPicturePopup.querySelector(".popup__picture-xl");
 export const pictureCaption = bigPicturePopup.querySelector(
   ".popup__pic-caption"
 );
+
+///Попап 4 (Кусто картинка)
+export const avatarPopup = document.querySelector('.popup_avatar');
+export const avatarChangeForm = avatarPopup.querySelector('.popup__form_avatar');
 
 ///config
 export const config = {

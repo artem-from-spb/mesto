@@ -16,14 +16,16 @@
     </header>
 
     <main>
-      
       <!-- Кусто -->
       <section class="profile">
-        <img
+        <div class="profile__avatar-overlay">
+          <img
           class="profile__avatar"
           src="<%=require('./images/kusto.jpg')%>"
           alt="Жак-Ив Кусто"
         />
+        </div>
+
 
         <div>
           <div class="profile__title-block">
@@ -53,8 +55,7 @@
       </section>
 
       <!-- Карточки -->
-      <section class="elements">
-      </section>
+      <section class="elements"></section>
     </main>
 
     <footer class="footer">
@@ -176,9 +177,43 @@
     <section class="popup popup_confirm">
       <div class="popup__container">
         <h2 class="popup__title popup__title_confirm">Вы уверены?</h2>
-        <button class="popup__button-save popup__button-save_confirm" type="submit" aria-label="Создать">
+        <button
+          class="popup__button-save popup__button-save_confirm"
+          type="submit"
+          aria-label="Создать"
+        >
           Да
         </button>
+        <button type="button" class="popup__button-close">
+          <img
+            src="<%=require('./images/Close_Icon.svg')%>"
+            alt="Закрыть окно"
+            class="popup__close-img"
+          />
+        </button>
+      </div>
+    </section>
+
+    <!-- Обновить аватар -->
+    <section class="popup popup_avatar popup_opened">
+      <div class="popup__container">
+        <h2 class="popup__title"> Обновить аватар</h2>
+        <form class="popup__form popup__form_avatar" novalidate name="add">
+          <input
+          type="url"
+          class="popup__input popup__input_type_about"
+          placeholder="Ссылка на картинку"
+          required
+          id="avatar"
+          name="link"
+          />
+          <span class="popup__error avatar-input-error" id="avatar-input-error"
+            >dddddddddd</span
+          >
+          <button class="popup__button-save" type="submit" aria-label="Создать">
+            Сохранить
+          </button>
+        </form>
         <button type="button" class="popup__button-close">
           <img
             src="<%=require('./images/Close_Icon.svg')%>"
@@ -207,10 +242,12 @@
         />
         <div class="card__info">
           <h2 class="card__title">Карачаевск</h2>
-          <button type="button" class="card__button-like"></button>
+          <div class="card__like-section">
+            <button type="button" class="card__button-like"></button>
+            <p class="card__like-counter">1</p>
+          </div>
         </div>
       </div>
     </template>
-
   </body>
 </html>

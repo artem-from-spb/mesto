@@ -1,0 +1,5 @@
+.profile__avatar-overlay {
+    background-image: url('../../../images/pen.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
