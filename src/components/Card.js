@@ -3,8 +3,8 @@ export default class Card {
     { name, link, likes, owner, _id, userId },
     cardSelector,
     handleCardClick,
-    deleteHandler,
-    addLike,
+    handleDeleteCard,
+    setLike,
     removeLike
   ) {
     this._text = name;
@@ -15,8 +15,8 @@ export default class Card {
     this._imageId = _id;
     this._likes = likes;
     this._userId = userId;
-    this._deleteHandler = deleteHandler;
-    this._addLike = addLike;
+    this._handleDeleteCard = handleDeleteCard;
+    this._setLike = setLike;
     this._removeLike = removeLike;
     this._handleCardLike = this._handleCardLike.bind(this);
   }
@@ -65,12 +65,11 @@ export default class Card {
 
   //лайк
   _handleCardLike(evt) {
-    //  this._buttonLike.classList.toggle("card__like_active");
     if (!evt.target.classList.contains("card__like_active")) {
       this._element
         .querySelector(".card__button-like")
         .classList.add("card__like_active");
-      this._addLike();
+      this._setLike();
     } else {
       this._element
         .querySelector(".card__button-like")
@@ -94,7 +93,7 @@ export default class Card {
 
     this._buttonLike.addEventListener("click", this._handleCardLike);
     this._recycleBin.addEventListener("click", () => {
-      this._deleteHandler();
+      this._handleDeleteCard();
     });
 
     this._cardImage.addEventListener("click", () => {

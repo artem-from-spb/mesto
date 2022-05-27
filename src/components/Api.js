@@ -53,7 +53,7 @@ export default class Api {
     }).then(this._errorHandler);
   }
 
-   // 7. Удаление карточки
+  // 7. Удаление карточки
   removeCard(cardId) {
     return fetch(`${this._url}cards/${cardId}`, {
       method: "DELETE",
@@ -63,26 +63,26 @@ export default class Api {
 
   ///8. Постановка и снятие лайка
   setLike(cardId) {
-    return fetch(`${this._url}cards/likes/${cardId}`, {
+    return fetch(`${this._url}cards/${cardId}/likes`, {
       method: "PUT",
       headers: this._headers,
     }).then(this._errorHandler);
   }
 
   removeLike(cardId) {
-    return fetch(`${this._url}cards/likes/${cardId}`, {
+    return fetch(`${this._url}cards/${cardId}/likes`, {
       method: "DELETE",
       headers: this._headers,
     }).then(this._errorHandler);
   }
 
   ///9. Обновление аватара пользователя
-  avatarPictureNew(imageUrl) {
+  avatarPictureNew(link) {
     return fetch(`${this._url}users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        avatar: imageUrl
+        avatar: link,
       }),
     }).then(this._errorHandler);
   }

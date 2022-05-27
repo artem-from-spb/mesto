@@ -25,8 +25,4 @@ export default class UserInfo {
   returnUserId() {
     return this._userId;
   }
-
-  setAvatar(data) {
-    this._avatar.src = data.input_link_profile === '' ? this._avatar.src : data.input_link_profile;
-  }
 }

@@ -20,15 +20,12 @@
       <section class="profile">
         <div class="profile__avatar-overlay">
           <img
-          class="profile__avatar"
-          src="<%=require('./images/kusto.jpg')%>"
-          alt="Жак-Ив Кусто"
-        />
-          <button class="profile__avatar-button" >
-
-          </button>
+            class="profile__avatar"
+            src="<%=require('./images/kusto.jpg')%>"
+            alt="Жак-Ив Кусто"
+          />
+          <button class="profile__avatar-button"></button>
         </div>
-
 
         <div>
           <div class="profile__title-block">
@@ -200,15 +197,15 @@
     <!-- Обновить аватар -->
     <section class="popup popup_avatar">
       <div class="popup__container">
-        <h2 class="popup__title"> Обновить аватар</h2>
+        <h2 class="popup__title">Обновить аватар</h2>
         <form class="popup__form popup__form_avatar" novalidate name="avatar">
           <input
-          type="url"
-          class="popup__input popup__input_avatar"
-          placeholder="Ссылка на картинку"
-          required
-          id="avatar-input"
-          name="avatar"
+            type="url"
+            class="popup__input popup__input_avatar"
+            placeholder="Ссылка на картинку"
+            required
+            id="avatar-input"
+            name="avatar"
           />
           <span class="popup__error avatar-input-error" id="avatar-input-error"
             >dddddddddd</span
@@ -226,8 +223,6 @@
         </button>
       </div>
     </section>
-
-
 
     <!-- Темплейт - заготовка карточки -->
     <template id="card-template">
