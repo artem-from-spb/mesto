@@ -64,8 +64,19 @@ export default class Card {
   }
 
   //лайк
-  _handleCardLike() {
-    this._buttonLike.classList.toggle("card__like_active");
+  _handleCardLike(evt) {
+    //  this._buttonLike.classList.toggle("card__like_active");
+    if (!evt.target.classList.contains("card__like_active")) {
+      this._element
+        .querySelector(".card__button-like")
+        .classList.add("card__like_active");
+      this._addLike();
+    } else {
+      this._element
+        .querySelector(".card__button-like")
+        .classList.remove("card__like_active");
+      this._removeLike();
+    }
   }
 
   //////
@@ -81,15 +92,10 @@ export default class Card {
     this._cardImage = this._element.querySelector(".card__image");
     this._buttonLike = this._element.querySelector(".card__button-like");
 
-    this._buttonLike.addEventListener("click", () => {
-      this._handleCardLike();
+    this._buttonLike.addEventListener("click", this._handleCardLike);
+    this._recycleBin.addEventListener("click", () => {
+      this._deleteHandler();
     });
-    this._element
-      .querySelector(".card__recycle-bin")
-      .addEventListener("click", () => {
-        
-        this._deleteHandler();
-      });
 
     this._cardImage.addEventListener("click", () => {
       this._handleCardClick(this._text, this._pic);
