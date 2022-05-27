@@ -4,18 +4,21 @@ export default class Api {
     this._headers = data.headers;
   }
 
+  ///0. repeat part
+  _errorHandler(res) {
+    if (res.ok) {
+      return res.json();
+    }
+
+    return Promise.reject("Что-то пошло не так :(");
+  }
+
   ///1. Загрузка информации о пользователе с сервера
   getUserInfo() {
     return fetch(`${this._url}users/me`, {
       method: "GET",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject("Что-то пошло не так :(");
-    });
+    }).then(this._errorHandler);
   }
 
   ///2. Загрузка карточек с сервера
@@ -23,12 +26,7 @@ export default class Api {
     return fetch(`${this._url}cards`, {
       method: "GET",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Что-то пошло не так :(");
-    });
+    }).then(this._errorHandler);
   }
 
   //3. Редактирование профиля
@@ -40,13 +38,7 @@ export default class Api {
         name: data.name,
         about: data.about,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject("Что-то пошло не так :(");
-    });
+    }).then(this._errorHandler);
   }
 
   //4. Добавление новой карточки
@@ -58,12 +50,44 @@ export default class Api {
         name: data.name,
         link: data.link,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
+    }).then(this._errorHandler);
+  }
 
-      return Promise.reject("Что-то пошло не так :(");
-    });
+  // 5. Отображение количества лайков карточки
+
+
+
+  // 7. Удаление карточки
+  removeCard(cardId) {
+    return fetch(`${this._url}cards/${cardId}`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then(this._errorHandler);
+  }
+
+  ///8. Постановка и снятие лайка
+  setLike(cardId) {
+    return fetch(`${this._url}cards/likes/${cardId}`, {
+      method: "PUT",
+      headers: this._headers,
+    }).then(this._errorHandler);
+  }
+
+  removeLike(cardId) {
+    return fetch(`${this._url}cards/likes/${cardId}`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then(this._errorHandler);
+  }
+
+  ///9. Обновление аватара пользователя
+  avatarPictureNew(imageUrl) {
+    return fetch(`${this._url}users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: imageUrl
+      }),
+    }).then(this._errorHandler);
   }
 }

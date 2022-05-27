@@ -8,6 +8,7 @@ import {
   placeAddButton,
   placeAddForm,
   avatarChangeForm,
+  avatarEditButton,
   config,
 } from "../utils/constants.js";
 
@@ -18,6 +19,7 @@ import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
+import PopupWithSubmit from "../components/PopupWithSubmit.js";
 
 ///////////////////////////////API
 const api = new Api({
@@ -71,9 +73,33 @@ const popupWithFormPlaceAdd = new PopupWithForm(".popup_add", (data) => {
 popupWithFormPlaceAdd.setEventListeners();
 
 
-//5. Отображение количества лайков карточки
+// 5. Отображение количества лайков карточки
 
-// 6. Попап удаления карточки
+// 7. Удаление карточки
+  const popupConfirmDelete = new PopupWithSubmit('.popup__button-save_confirm')
+  const removeCardItem = (card) => {
+    return () => {
+      api.removeCard(card.returnCardId())
+      .then((res) => {
+        popupConfirmDelete.close();
+        card.removeItem();
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    }
+  }
+
+
+///8. Постановка и снятие лайка
+
+///9. Обновление аватара пользователя
+const popupWithFormAvatar = new PopupWithForm('.popup_avatar', (data) => {});
+popupWithFormAvatar.setEventListeners();
+avatarEditButton.addEventListener('click', () => {
+  popupWithFormAvatar.open();
+  validateAvatarpopup.resetErrors();
+})
 
 //////////////////////////
 
@@ -100,8 +126,11 @@ profileEditButton.addEventListener("click", () => {
 
 //Попап 2
 //Создание карточек
-const createNewCard = (data) => {
-  const card = new Card(data, ".card", handleCardClick);
+const createNewCard = ({ name, link, myId, cardId, userId }) => {
+  const card = new Card({ name, link, myId, cardId, userId }, ".card", handleCardClick, () => {
+    popupConfirmDelete.setEventListeners(removeCardItem(card));
+    popupConfirmDelete.open()
+  });
   return card.generateCard();
 };
 

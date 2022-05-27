@@ -1,9 +1,16 @@
 export default class Card {
-  constructor({ name, link }, cardSelector, handleCardClick) {
+  constructor({ name, link, myId, cardId, userId, likes }, cardSelector, handleCardClick, deleteHandler, setLike, removeLike) {
     this._text = name;
     this._pic = link;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
+    this._cardId = cardId;
+    this._myId = myId;
+    this._userId = userId;
+    this._deleteHandler = deleteHandler;
+    this._likes = likes;
+    this._setLike = setLike;
+    this._removeLike = removeLike;
   }
   //клон шаблона
   _getTemplate() {
@@ -17,6 +24,13 @@ export default class Card {
   generateCard() {
     this._element = this._getTemplate();
 
+    //проверяем id для корзины
+    this._recycleBin = this._element.querySelector('.card__recycle-bin');
+    if (this._myId !== this._userId) {
+      this._recycleBin.remove();
+    }
+
+    
     this._setEventListeners();
 
     this._element.querySelector(".card__title").textContent = this._text;
@@ -26,7 +40,7 @@ export default class Card {
     return this._element;
   }
 
-  _removeItem() {
+  removeItem() {
     this._element.remove();
     this._element = null;
   }
@@ -35,6 +49,16 @@ export default class Card {
   _handleCardLike() {
     this._buttonLike.classList.toggle("card__like_active");
   }
+
+  //////
+   returnCardId() {
+    return this._cardId;
+  }
+
+  countLikes(counter) {
+    this._element.querySelector('.card__like-counter').textContent = counter;
+  }
+
 
   _setEventListeners() {
     this._cardImage = this._element.querySelector(".card__image");
@@ -47,7 +71,7 @@ export default class Card {
     this._element
       .querySelector(".card__recycle-bin")
       .addEventListener("click", () => {
-     //   this._removeItem();
+        this.removeItem();
      const confirmPopup = document.querySelector('.popup_confirm');
      confirmPopup.classList.add('popup_opened');
       });
@@ -56,4 +80,5 @@ export default class Card {
       this._handleCardClick(this._text, this._pic);
     });
   }
+
 }

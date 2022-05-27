@@ -30,6 +30,8 @@ export const placeAddForm = placeAddPopup.querySelector(".popup__form_add");
 
 export const cardTemplate = document.querySelector("#card-template").content;
 export const elements = document.querySelector(".elements");
+///лайки
+export const likesCounter = document.querySelector(".card__like-counter");
 
 // Попап 3 (большая картинка)
 export const bigPicturePopup = document.querySelector(".popup_big-picture");
@@ -42,8 +44,13 @@ export const pictureCaption = bigPicturePopup.querySelector(
 );
 
 ///Попап 4 (Кусто картинка)
-export const avatarPopup = document.querySelector('.popup_avatar');
-export const avatarChangeForm = avatarPopup.querySelector('.popup__form_avatar');
+export const avatarPopup = document.querySelector(".popup_avatar");
+export const avatarChangeForm = avatarPopup.querySelector(
+  ".popup__form_avatar"
+);
+export const avatarEditButton = document.querySelector(
+  ".profile__avatar-button"
+);
 
 ///config
 export const config = {
