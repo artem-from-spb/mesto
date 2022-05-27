@@ -30,8 +30,6 @@ export const placeAddForm = placeAddPopup.querySelector(".popup__form_add");
 
 export const cardTemplate = document.querySelector("#card-template").content;
 export const elements = document.querySelector(".elements");
-///лайки
-export const likesCounter = document.querySelector(".card__like-counter");
 
 // Попап 3 (большая картинка)
 export const bigPicturePopup = document.querySelector(".popup_big-picture");

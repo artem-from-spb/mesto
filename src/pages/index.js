@@ -30,17 +30,21 @@ const api = new Api({
   },
 });
 
-
 ///new Section
 const createCard = new Section((item) => {
   createCard.addItem(createNewCard(item));
 }, ".elements");
 
-
-
 ///1. Загрузка информации о пользователе с сервера
-api.getUserInfo();
-
+api
+  .getUserInfo()
+  .then((res) => {
+    userInfo.setUserInfo(res.name, res.about, res.avatar);
+    userInfo.setUserId(res._id);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 ///2. Загрузка карточек с сервера
 api
@@ -50,17 +54,24 @@ api
   })
   .catch((err) => alert(err));
 
-  
 ///3. Редактирование профиля
-api
+const editInfoKusto = () => {
+  api
   .editProfileData({
-    name: "Marie Skłodowska Curie",
-    about: "Physicist and Chemist",
+    name: nameInput.value,
+    about: jobInput.value,
   })
   .then((data) => {
-    userInfo.setUserInfo({ name: data.name, job: data.about });
+    userInfo.setUserInfo({ name: data.name, job: data.about, avatar: data.avatar });
   })
   .catch((err) => alert(err));
+  popupWithFormAvatar.close();
+}
+
+const popupWithFormProfile = new PopupWithForm(".popup_profile", editInfoKusto);
+popupWithFormProfile.setEventListeners();
+
+
 
 
 //4. Добавление новой карточки
@@ -72,34 +83,48 @@ const popupWithFormPlaceAdd = new PopupWithForm(".popup_add", (data) => {
 
 popupWithFormPlaceAdd.setEventListeners();
 
-
 // 5. Отображение количества лайков карточки
 
 // 7. Удаление карточки
-  const popupConfirmDelete = new PopupWithSubmit('.popup__button-save_confirm')
-  const removeCardItem = (card) => {
-    return () => {
-      api.removeCard(card.returnCardId())
+const popupConfirmDelete = new PopupWithSubmit(".popup_confirm");
+const removeCardItem = (card) => {
+  return () => {
+    api
+      .removeCard(card.returnCardId())
       .then((res) => {
         popupConfirmDelete.close();
         card.removeItem();
       })
       .catch((err) => {
-        console.log(err)
-      })
-    }
-  }
-
+        console.log(err);
+      });
+  };
+};
 
 ///8. Постановка и снятие лайка
 
 ///9. Обновление аватара пользователя
-const popupWithFormAvatar = new PopupWithForm('.popup_avatar', (data) => {});
+const submitEditProfile = (data) => {
+  api
+    .avatarPictureNew(data.avatar)
+    .then((res) => {
+      userInfo.setAvatar(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  popupWithFormAvatar.close();
+};
+
+const popupWithFormAvatar = new PopupWithForm(
+  ".popup_avatar",
+  submitEditProfile
+);
 popupWithFormAvatar.setEventListeners();
-avatarEditButton.addEventListener('click', () => {
+avatarEditButton.addEventListener("click", () => {
   popupWithFormAvatar.open();
   validateAvatarpopup.resetErrors();
-})
+});
 
 //////////////////////////
 
@@ -107,13 +132,10 @@ avatarEditButton.addEventListener('click', () => {
 const userInfo = new UserInfo({
   name: ".profile__title",
   job: ".profile__subtitle",
+  avatar: '.profile__avatar'
 });
 
-const popupWithFormProfile = new PopupWithForm(".popup_profile", (data) => {
-  userInfo.setUserInfo(data);
-});
 
-popupWithFormProfile.setEventListeners();
 
 profileEditButton.addEventListener("click", () => {
   const { name, job } = userInfo.getUserInfo();
@@ -126,17 +148,34 @@ profileEditButton.addEventListener("click", () => {
 
 //Попап 2
 //Создание карточек
-const createNewCard = ({ name, link, myId, cardId, userId }) => {
-  const card = new Card({ name, link, myId, cardId, userId }, ".card", handleCardClick, () => {
-    popupConfirmDelete.setEventListeners(removeCardItem(card));
-    popupConfirmDelete.open()
-  });
+const createNewCard = ({ name, link, likes, owner, _id }) => {
+  const card = new Card(
+    { name, link, likes, owner, _id, userId: userInfo.returnUserId() },
+    ".card",
+    handleCardClick,
+    () => {
+      popupConfirmDelete.setEventListeners(removeCardItem(card));
+      popupConfirmDelete.open();
+    },
+    () => {
+      api.setLike(card.returnCardId())
+      .then((res) => {
+          card.countLikes(res.likes.length);
+        });
+    },
+    () => {
+      api.removeLike(card.returnCardId())
+      .then((res) => {
+          card.countLikes(res.likes.length);
+        });
+      }
+  );
+
   return card.generateCard();
+
 };
 
 //Добавление в верстку
-
-
 
 placeAddButton.addEventListener("click", () => {
   validatePlaceAddPopup.resetErrors();

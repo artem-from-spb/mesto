@@ -1,8 +1,8 @@
 export default class UserInfo {
-  constructor({ name, job }, api) {
+  constructor({ name, job, avatar }) {
     this._name = document.querySelector(name);
     this._job = document.querySelector(job);
-    this._api = api
+    this._avatar = document.querySelector(avatar);
   }
 
   getUserInfo() {
@@ -12,8 +12,21 @@ export default class UserInfo {
     };
   }
 
-  setUserInfo({ name, job }) {
+  setUserInfo({ name, job, avatar }) {
     this._name.textContent = name;
     this._job.textContent = job;
+    this._avatar.src = avatar;
+  }
+
+  setUserId(id) {
+    this._userId = id;
+  }
+
+  returnUserId() {
+    return this._userId;
+  }
+
+  setAvatar(data) {
+    this._avatar.src = data.input_link_profile === '' ? this._avatar.src : data.input_link_profile;
   }
 }

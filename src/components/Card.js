@@ -1,16 +1,24 @@
 export default class Card {
-  constructor({ name, link, myId, cardId, userId, likes }, cardSelector, handleCardClick, deleteHandler, setLike, removeLike) {
+  constructor(
+    { name, link, likes, owner, _id, userId },
+    cardSelector,
+    handleCardClick,
+    deleteHandler,
+    addLike,
+    removeLike
+  ) {
     this._text = name;
     this._pic = link;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
-    this._cardId = cardId;
-    this._myId = myId;
+    this._ownerId = owner._id;
+    this._imageId = _id;
+    this._likes = likes;
     this._userId = userId;
     this._deleteHandler = deleteHandler;
-    this._likes = likes;
-    this._setLike = setLike;
+    this._addLike = addLike;
     this._removeLike = removeLike;
+    this._handleCardLike = this._handleCardLike.bind(this);
   }
   //клон шаблона
   _getTemplate() {
@@ -25,12 +33,22 @@ export default class Card {
     this._element = this._getTemplate();
 
     //проверяем id для корзины
-    this._recycleBin = this._element.querySelector('.card__recycle-bin');
-    if (this._myId !== this._userId) {
+    this._recycleBin = this._element.querySelector(".card__recycle-bin");
+    if (this._ownerId !== this._userId) {
       this._recycleBin.remove();
     }
 
-    
+    //считаем лайки
+    this._element.querySelector(".card__like-counter").textContent =
+      this._likes.length;
+    this._likes.forEach((item) => {
+      if (item._id === this._userId) {
+        this._element
+          .querySelector(".card__button-like")
+          .classList.add("card__like_active");
+      }
+    });
+
     this._setEventListeners();
 
     this._element.querySelector(".card__title").textContent = this._text;
@@ -51,14 +69,13 @@ export default class Card {
   }
 
   //////
-   returnCardId() {
-    return this._cardId;
+  returnCardId() {
+    return this._imageId;
   }
 
   countLikes(counter) {
-    this._element.querySelector('.card__like-counter').textContent = counter;
+    this._element.querySelector(".card__like-counter").textContent = counter;
   }
-
 
   _setEventListeners() {
     this._cardImage = this._element.querySelector(".card__image");
@@ -67,18 +84,15 @@ export default class Card {
     this._buttonLike.addEventListener("click", () => {
       this._handleCardLike();
     });
-
     this._element
       .querySelector(".card__recycle-bin")
       .addEventListener("click", () => {
-        this.removeItem();
-     const confirmPopup = document.querySelector('.popup_confirm');
-     confirmPopup.classList.add('popup_opened');
+        
+        this._deleteHandler();
       });
 
     this._cardImage.addEventListener("click", () => {
       this._handleCardClick(this._text, this._pic);
     });
   }
-
 }

@@ -53,11 +53,7 @@ export default class Api {
     }).then(this._errorHandler);
   }
 
-  // 5. Отображение количества лайков карточки
-
-
-
-  // 7. Удаление карточки
+   // 7. Удаление карточки
   removeCard(cardId) {
     return fetch(`${this._url}cards/${cardId}`, {
       method: "DELETE",
