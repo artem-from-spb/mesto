@@ -8,8 +8,8 @@ export default class PopupWithConfirmation extends Popup {
     );
   }
 
-  setEventListeners(removeCard) {
-    super.setEventListeners();
+  open(removeCard) {
+    super.open();
     this._handleRemoveButton = removeCard;
     this._popupButtonSaveConfirm.addEventListener(
       "click",

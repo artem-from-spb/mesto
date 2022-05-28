@@ -3,8 +3,6 @@ import "./index.css";
 import {
   profilePopup,
   profileEditButton,
-  nameInput,
-  jobInput,
   placeAddButton,
   placeAddForm,
   avatarChangeForm,
@@ -35,47 +33,35 @@ const createCard = new Section((item) => {
   createCard.addItem(createNewCard(item));
 }, ".elements");
 
-///1. Загрузка информации о пользователе с сервера
-api
-  .getUserInfo()
-  .then((res) => {
-    userInfo.setUserInfo({
-      name: res.name,
-      job: res.about,
-      avatar: res.avatar,
-    });
-    userInfo.setUserId(res._id);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+///UserInfo
+const handleUserInfo = (data) => {
+  userInfo.setUserInfo(data);
+};
 
-///2. Загрузка карточек с сервера
-api
-  .getInitialCards()
-  .then((res) => {
-    createCard.renderItems(res);
+///Promise.all (1.Загрузка информации о пользователе + 2.карточек с сервера)
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([userData, cards]) => {
+    handleUserInfo(userData);
+
+    createCard.renderItems(cards);
   })
-  .catch((err) => alert(err));
+  .catch((err) => console.log(err));
 
 ///3. Редактирование профиля
-const editPersonInfo = () => {
+const editPersonInfo = (data) => {
   popupWithFormProfile.renderLoading(true);
+  const inputValues = popupWithFormProfile.getInputValues();
+
   api
-    .editProfileData({
-      name: nameInput.value,
-      about: jobInput.value,
+    .editProfileData(data)
+    .then((res) => {
+      userInfo.setUserInfo(res);
+      popupWithFormProfile.close();
     })
-    .then((data) => {
-      userInfo.setUserInfo({
-        name: data.name,
-        job: data.about,
-        avatar: data.avatar,
-      });
+    .catch((err) => alert(err))
+    .finally(() => {
       popupWithFormProfile.renderLoading(false);
-    })
-    .catch((err) => alert(err));
-  popupWithFormAvatar.close();
+    });
 };
 
 const popupWithFormProfile = new PopupWithForm(
@@ -87,10 +73,18 @@ popupWithFormProfile.setEventListeners();
 //4. Добавление новой карточки
 const popupWithFormPlaceAdd = new PopupWithForm(".popup_add", (data) => {
   popupWithFormPlaceAdd.renderLoading(true);
-  api.addNewCard(data).then((res) => {
-    createCard.addItem(createNewCard(res));
-    popupWithFormPlaceAdd.renderLoading(false, "Создать");
-  });
+  api
+    .addNewCard(data)
+    .then((res) => {
+      createCard.addItem(createNewCard(res));
+      popupWithFormPlaceAdd.close();
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      popupWithFormPlaceAdd.renderLoading(false, "Создать");
+    });
 });
 
 popupWithFormPlaceAdd.setEventListeners();
@@ -102,8 +96,8 @@ const removeCardItem = (card) => {
     api
       .removeCard(card.returnCardId())
       .then((res) => {
-        popupConfirmDelete.close();
         card.removeItem();
+        popupConfirmDelete.close();
       })
       .catch((err) => {
         console.log(err);
@@ -119,9 +113,10 @@ const submitEditProfile = (data) => {
     .then((res) => {
       userInfo.setUserInfo({
         name: res.name,
-        job: res.about,
+        about: res.about,
         avatar: res.avatar,
       });
+      popupWithFormAvatar.close();
     })
     .catch((err) => {
       console.log(err);
@@ -129,7 +124,6 @@ const submitEditProfile = (data) => {
     .finally(() => {
       popupWithFormAvatar.renderLoading(false);
     });
-  //popupWithFormAvatar.close();
 };
 
 const popupWithFormAvatar = new PopupWithForm(
@@ -152,10 +146,8 @@ const userInfo = new UserInfo({
 });
 
 profileEditButton.addEventListener("click", () => {
-  const { name, job } = userInfo.getUserInfo();
-  nameInput.value = name;
-  jobInput.value = job;
-
+  const { name, about } = userInfo.getUserInfo();
+  popupWithFormProfile.setInputValues({ name, about });
   popupWithFormProfile.open();
   validateProfilePopup.resetErrors();
 });
@@ -165,21 +157,30 @@ profileEditButton.addEventListener("click", () => {
 const createNewCard = ({ name, link, likes, owner, _id }) => {
   const card = new Card(
     { name, link, likes, owner, _id, userId: userInfo.returnUserId() },
+    "#card-template",
     ".card",
     handleCardClick,
     () => {
-      popupConfirmDelete.setEventListeners(removeCardItem(card));
-      popupConfirmDelete.open();
+      popupConfirmDelete.setEventListeners();
+      popupConfirmDelete.open(removeCardItem(card));
     },
     () => {
-      api.setLike(card.returnCardId()).then((res) => {
-        card.countLikes(res.likes.length);
-      });
+      api
+        .setLike(card.returnCardId())
+        .then((res) => {
+          card.countLikes(res.likes.length);
+          card.toggleLike();
+        })
+        .catch((err) => console.log(err));
     },
     () => {
-      api.removeLike(card.returnCardId()).then((res) => {
-        card.countLikes(res.likes.length);
-      });
+      api
+        .removeLike(card.returnCardId())
+        .then((res) => {
+          card.countLikes(res.likes.length);
+          card.toggleLike();
+        })
+        .catch((err) => console.log(err));
     }
   );
 
@@ -194,11 +195,15 @@ placeAddButton.addEventListener("click", () => {
 });
 
 //попап 3
-const popupWithImage = new PopupWithImage({
-  popupSelector: ".popup_big-picture",
-  text: ".popup__pic-caption",
-  pic: ".popup__picture-xl",
-});
+const popupWithImage = new PopupWithImage(
+  {
+    popupSelector: ".popup_big-picture",
+    text: ".popup__pic-caption",
+    pic: ".popup__picture-xl",
+  },
+  ".popup__picture-xl",
+  ".popup__pic-caption"
+);
 
 function handleCardClick(name, link) {
   popupWithImage.open(name, link);
