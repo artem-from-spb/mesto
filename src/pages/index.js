@@ -50,8 +50,6 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
 ///3. Редактирование профиля
 const editPersonInfo = (data) => {
   popupWithFormProfile.renderLoading(true);
-  const inputValues = popupWithFormProfile.getInputValues();
-
   api
     .editProfileData(data)
     .then((res) => {
