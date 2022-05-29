@@ -89,6 +89,7 @@ popupWithFormPlaceAdd.setEventListeners();
 
 // 7. Удаление карточки
 const popupConfirmDelete = new PopupWithConfirmation(".popup_confirm");
+
 const removeCardItem = (card) => {
   return () => {
     api
@@ -102,6 +103,8 @@ const removeCardItem = (card) => {
       });
   };
 };
+
+popupConfirmDelete.setEventListeners();
 
 ///9. Обновление аватара пользователя
 const submitEditProfile = (data) => {
@@ -132,6 +135,7 @@ popupWithFormAvatar.setEventListeners();
 avatarEditButton.addEventListener("click", () => {
   popupWithFormAvatar.open();
   validateAvatarpopup.resetErrors();
+  validateAvatarpopup.disableButton();
 });
 
 //////////////////////////
@@ -159,7 +163,6 @@ const createNewCard = ({ name, link, likes, owner, _id }) => {
     ".card",
     handleCardClick,
     () => {
-      popupConfirmDelete.setEventListeners();
       popupConfirmDelete.open(removeCardItem(card));
     },
     () => {
