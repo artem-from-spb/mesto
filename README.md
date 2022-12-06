@@ -44,7 +44,8 @@
 - Media queries
 - БЭМ
 
-## 🚀 <a name="how_to_use">Инструкция по установке</a>
+## ▶️ <a name="how_to_use">Инструкция по установке</a>
+
 >git clone https://github.com/artem-from-spb/mesto.git
 
 
